@@ -1,0 +1,36 @@
+Arguments: 
+  /home/tenshi/.nvm/versions/node/v13.3.0/bin/node /usr/share/yarn/bin/yarn.js init
+
+PATH: 
+  /home/tenshi/.nvm/versions/node/v13.3.0/bin:/home/tenshi/.vscode-server/bin/26076a4de974ead31f97692a0d32f90d735645c0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files (x86)/Common Files/Oracle/Java/javapath:/mnt/c/Program Files/AdoptOpenJDK/jdk-11.0.2+9-jre/bin:/mnt/c/Program Files/AdoptOpenJDK/jdk8u202-b08-jre/bin:/mnt/c/Program Files (x86)/AdoptOpenJDK/jdk8u202-b08-jre/bin:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Python27:/mnt/c/Python27/Scripts:/mnt/c/Program Files/nodejs/:/mnt/c/Users/mrcom/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/mrcom/AppData/Roaming/npm:/mnt/c/Users/mrcom/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin
+
+Yarn version: 
+  1.19.1
+
+Node version: 
+  13.3.0
+
+Platform: 
+  linux x64
+
+Trace: 
+  Error: canceled
+      at Interface.<anonymous> (/usr/share/yarn/lib/cli.js:136824:13)
+      at Interface.emit (events.js:219:5)
+      at Interface._ttyWrite (readline.js:894:16)
+      at ReadStream.onkeypress (readline.js:200:10)
+      at ReadStream.emit (events.js:219:5)
+      at emitKeys (internal/readline/utils.js:438:14)
+      at emitKeys.next (<anonymous>)
+      at ReadStream.onData (readline.js:1160:36)
+      at ReadStream.emit (events.js:219:5)
+      at addChunk (_stream_readable.js:332:12)
+
+npm manifest: 
+  No manifest
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
