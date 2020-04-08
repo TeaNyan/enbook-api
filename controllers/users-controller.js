@@ -5,7 +5,10 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const HttpError = require("../models/http-error");
 
+const JWT_KEY = "Trump2020_key";
+
 const signup = async (req, res, next) => {
+  console.log("here");
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(
@@ -18,7 +21,7 @@ const signup = async (req, res, next) => {
   let existingUser;
   try {
     existingUser = await User.findOne({
-      $or: [{ email: email }, { username: username }]
+      $or: [{ email: email }, { username: username }],
     });
   } catch (err) {
     const error = new HttpError("Whoops! Something went wrong", 500);
@@ -43,10 +46,10 @@ const signup = async (req, res, next) => {
   const createdUser = new User({
     name,
     email,
-    username,
+    username: email,
     //image: req.file.path,
     password: hashedPassword,
-    places: []
+    posts: [],
   });
 
   try {
@@ -61,7 +64,7 @@ const signup = async (req, res, next) => {
   try {
     token = jwt.sign(
       { userId: createdUser.id, email: createdUser.email },
-      "Trump2020_key",
+      JWT_KEY,
       { expiresIn: "1h" }
     );
   } catch (err) {
@@ -69,12 +72,18 @@ const signup = async (req, res, next) => {
     return next(error);
   }
 
-  res
+  res.cookie("token", token, {
+    maxAge: 60 * 60 * 1000 * 24,
+    path: "/",
+  });
+
+  return res
     .status(201)
-    .json({ user: createdUser.id, email: createdUser.email, token });
+    .json({ email: createdUser.email, userId: createdUser.id });
 };
 
 const login = async (req, res, next) => {
+  console.log("here");
   const { email, password } = req.body;
 
   let existingUser;
@@ -119,12 +128,48 @@ const login = async (req, res, next) => {
     return next(error);
   }
 
+  res.cookie("token", token, {
+    maxAge: 60 * 60 * 1000 * 24,
+    path: "/",
+  });
+
   res.json({
     userId: existingUser.id,
     email: existingUser.email,
-    token
   });
+};
+
+const me = async (req, res, next) => {
+  if (req.headers.cookie) {
+    let token = req.headers.cookie.split("=")[1];
+    try {
+      let decoded = jwt.verify(token, JWT_KEY);
+      return res.json({ email: decoded.email, userId: decoded.userId });
+    } catch (e) {
+      const error = new HttpError("Token is no longer valid!", 401);
+      return next(error);
+    }
+  }
+
+  return res.json(null);
+};
+
+const logout = async (req, res, next) => {
+  if (req.headers.cookie) {
+    const token = req.headers.cookie.split("=")[1];
+
+    res.cookie("token", token, {
+      maxAge: new Date(0),
+      path: "/",
+    });
+
+    return res.json({ message: "success" });
+  }
+  const error = new HttpError("You are not logged in", 401);
+  return next(error);
 };
 
 exports.signup = signup;
 exports.login = login;
+exports.me = me;
+exports.logout = logout;

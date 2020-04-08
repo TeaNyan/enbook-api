@@ -1,53 +1,46 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+const express = require("express");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const usersRoutes = require('./routes/users-routes');
+const usersRoutes = require("./routes/users-routes");
+const placesRoutes = require("./routes/places-routes");
 
 const app = express();
 
 const url =
-  'mongodb+srv://TeaKong:Teak1nesis@cluster0-g4qhi.mongodb.net/enbook?retryWrites=true&w=majority';
+  "mongodb+srv://TeaKong:Teak1nesis@cluster0-g4qhi.mongodb.net/enbook?retryWrites=true&w=majority";
 
 app.use(bodyParser.json());
 
 // Allows images to be viewed
 
-app.use('/uploads/images', express.static(path.join('uploads', 'images')));
+app.use("/uploads/images", express.static(path.join("uploads", "images")));
 
 // Allowed headers are Origin, X-requested-With, Content-Type, Accept, Authorization
 // Allowed methods are GET, POST, PATCH, DELETE
 
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
-    'Access-Control-Allow-Headers',
-    'Origin, X-requested-With, Content-Type, Accept, Authorization'
+    "Access-Control-Allow-Headers",
+    "Origin, X-requested-With, Content-Type, Accept, Authorization"
   );
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
   next();
 });
 
 // All available routes
 
-app.use('/api/users', usersRoutes);
-
-/* app.use("/api/places");
-app.use("/api/series");
-app.use("/api/photos");
-app.use("/api/movies");
-app.use("/api/sports");
-app.use("/api/books");
-app.use("/api/games");
-app.use("/api/anime"); */
+app.use("/api/users", usersRoutes);
+app.use("/api/places", placesRoutes);
 
 // If route is not defined, throw err
 
 app.use((req, res, next) => {
-  const error = new HttpError('Could not find this route', 404);
+  const error = new HttpError("Could not find this route", 404);
   throw error;
 });
 
@@ -55,7 +48,7 @@ app.use((req, res, next) => {
 
 app.use((error, req, res, next) => {
   if (req.file) {
-    fs.unlink(req.file.path, err => {
+    fs.unlink(req.file.path, (err) => {
       if (err) console.log(err);
     });
   }
@@ -64,22 +57,22 @@ app.use((error, req, res, next) => {
   }
 
   res.status(error.code || 500);
-  res.json({ message: error.message || 'Whoops! Something went wrong!' });
+  res.json({ message: error.message || "Whoops! Something went wrong!" });
 });
 
 // This is a fix for warning deprecated in mongooo
 
-mongoose.set('useNewUrlParser', true);
-mongoose.set('useFindAndModify', false);
-mongoose.set('useCreateIndex', true);
-mongoose.set('useUnifiedTopology', true);
+mongoose.set("useNewUrlParser", true);
+mongoose.set("useFindAndModify", false);
+mongoose.set("useCreateIndex", true);
+mongoose.set("useUnifiedTopology", true);
 
 //ANCHOR  Connect and run server
 
 mongoose
   .connect(url)
   .then(() => {
-    console.log('Server is running on port 5000. Everything is fine.');
+    console.log("Server is running on port 5000. Everything is fines.");
     app.listen(5000);
   })
-  .catch(e => console.log);
+  .catch((e) => console.log);
