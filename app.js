@@ -17,6 +17,10 @@ app.use(bodyParser.json());
 
 // Allows images to be viewed
 
+app.get("/", (req, res, next) => {
+  res.send("Hello world");
+});
+
 app.use("/uploads/images", express.static(path.join("uploads", "images")));
 
 // Allowed headers are Origin, X-requested-With, Content-Type, Accept, Authorization
