@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const fs = require("fs");
 const path = require("path");
@@ -9,6 +10,8 @@ const usersRoutes = require("./routes/users-routes");
 const placesRoutes = require("./routes/places-routes");
 
 const app = express();
+
+app.use(cors());
 
 const url =
   "mongodb+srv://TeaKong:Teak1nesis@cluster0-g4qhi.mongodb.net/enbook?retryWrites=true&w=majority";
@@ -22,19 +25,6 @@ app.get("/", (req, res, next) => {
 });
 
 app.use("/uploads/images", express.static(path.join("uploads", "images")));
-
-// Allowed headers are Origin, X-requested-With, Content-Type, Accept, Authorization
-// Allowed methods are GET, POST, PATCH, DELETE
-
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "https://enbook.herokuapp.com");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-requested-With, Content-Type, Accept, Authorization"
-  );
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
-  next();
-});
 
 // All available routes
 
