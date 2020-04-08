@@ -76,7 +76,11 @@ mongoose.set("useUnifiedTopology", true);
 mongoose
   .connect(url)
   .then(() => {
-    console.log("Server is running on port 5000. Everything is fines.");
-    app.listen(5000);
+    console.log(
+      `Server is running on port ${
+        process.env.PORT || 5000
+      }. Everything is fine.`
+    );
+    app.listen(process.env.PORT || 5000);
   })
   .catch((e) => console.log);
