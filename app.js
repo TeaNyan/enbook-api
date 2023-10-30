@@ -5,6 +5,7 @@ const cors = require("cors");
 
 const fs = require("fs");
 const path = require("path");
+require('dotenv').config({ path: path.resolve(__dirname, './.env') })
 
 const usersRoutes = require("./routes/users-routes");
 const placesRoutes = require("./routes/places-routes");
@@ -13,8 +14,7 @@ const app = express();
 
 app.use(cors());
 
-const url =
-  "mongodb+srv://TeaKong:Teak1nesis@cluster0-g4qhi.mongodb.net/enbook?retryWrites=true&w=majority";
+const url = process.env.MONGO_DB_SECRET;
 
 app.use(bodyParser.json());
 
