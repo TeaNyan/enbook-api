@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 // Allows images to be viewed
 
 app.get("/", (req, res, next) => {
-  res.send("Hello world");
+  res.send("Hello world 1");
 });
 
 app.use("/uploads/images", express.static(path.join("uploads", "images")));
